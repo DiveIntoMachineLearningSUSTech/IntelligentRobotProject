@@ -4,7 +4,7 @@ import imutils
 from sklearn.metrics import pairwise
 import time
 import subprocess
-import thread
+from thread import _thread
 
 # global variables
 bg = None
@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
     # keep looping, until interrupted
     while(True):
-        thread.start_new_thread(keypress, ())
+        _thread.start_new_thread(keypress, ())
         # get the current frame
         (grabbed, frame) = camera.read()
 
