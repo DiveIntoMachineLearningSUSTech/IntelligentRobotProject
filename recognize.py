@@ -4,6 +4,7 @@ import imutils
 from sklearn.metrics import pairwise
 import time
 import subprocess
+import thread
 
 # global variables
 bg = None
@@ -102,6 +103,21 @@ def count(thresholded, segmented):
 
 	return count
 
+def getch():   # define non-Windows version
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(sys.stdin.fileno())
+        ch = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch
+
+def keypress():
+    global status
+    status = 0 if char == 'c' else 1
+
+
 #-------------------------------------------------------------------------------
 # Main function
 #-------------------------------------------------------------------------------
@@ -121,10 +137,12 @@ if __name__ == "__main__":
     # calibration indicator
     calibrated = False
 
+    global status
     status = 0 ## 0 for idle, ready for reciving cmd, 1 for busy
 
     # keep looping, until interrupted
     while(True):
+        thread.start_new_thread(keypress, ())
         # get the current frame
         (grabbed, frame) = camera.read()
 
