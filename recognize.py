@@ -4,8 +4,7 @@ import imutils
 from sklearn.metrics import pairwise
 import time
 import subprocess
-import thread as _thread
-import sys, termios, tty
+import thread
 
 # global variables
 bg = None
@@ -104,19 +103,11 @@ def count(thresholded, segmented):
 
 	return count
 
-def getch():   # define non-Windows version
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(sys.stdin.fileno())
-        ch = sys.stdin.read(1)
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    return ch
 
-def keypress():
+def reset():
     global status
-    status = 0 if getch() == 'c' else 1
+    time.sleep(5)
+    status = 0
 
 
 #-------------------------------------------------------------------------------
@@ -143,7 +134,6 @@ if __name__ == "__main__":
 
     # keep looping, until interrupted
     while(True):
-        _thread.start_new_thread(keypress, ())
         # get the current frame
         (grabbed, frame) = camera.read()
 
@@ -194,15 +184,16 @@ if __name__ == "__main__":
                     if fingers == 2:
                         p = subprocess.Popen('rosrun turtle_move line', stdout=subprocess.PIPE, shell=True)
                         # time.sleep(5)
-                        p.kill()
+                        # p.kill()
                     elif fingers == 1:
                         p = subprocess.Popen('rosrun turtle_move circle', stdout=subprocess.PIPE, shell=True)
                         # time.sleep(5)
-                        p.kill()
+                        # p.kill()
                     elif fingers == 3:
                         p = subprocess.Popen('rosrun turtle_move move_turtle_goforward', stdout=subprocess.PIPE, shell=True)
                         # time.sleep(5)
-                        p.kill()
+                        # p.kill()
+                    thread.start_new_thread(reset, ())
                     status = 1
 
                 cv2.putText(clone, str(fingers), (70, 45), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
