@@ -121,6 +121,8 @@ if __name__ == "__main__":
     # calibration indicator
     calibrated = False
 
+    status = 0 ## 0 for idle, ready for reciving cmd, 1 for busy
+
     # keep looping, until interrupted
     while(True):
         # get the current frame
@@ -168,18 +170,22 @@ if __name__ == "__main__":
 
                 # count the number of fingers
                 fingers = count(thresholded, segmented)
-                if fingers == 2:
-                    p = subprocess.Popen('rosrun turtle_move line', stdout=subprocess.PIPE, shell=True)
-                    time.sleep(5)
-                    p.kill()
-                elif fingers == 1:
-                    p = subprocess.Popen('rosrun turtle_move circle', stdout=subprocess.PIPE, shell=True)
-                    time.sleep(5)
-                    p.kill()
-                elif fingers == 3:
-                    p = subprocess.Popen('rosrun turtle_move move_turtle_goforward', stdout=subprocess.PIPE, shell=True)
-                    time.sleep(5)
-                    p.kill()
+
+                if status == 0:
+                    if fingers == 2:
+                        p = subprocess.Popen('rosrun turtle_move line', stdout=subprocess.PIPE, shell=True)
+                        # time.sleep(5)
+                        p.kill()
+                    elif fingers == 1:
+                        p = subprocess.Popen('rosrun turtle_move circle', stdout=subprocess.PIPE, shell=True)
+                        # time.sleep(5)
+                        p.kill()
+                    elif fingers == 3:
+                        p = subprocess.Popen('rosrun turtle_move move_turtle_goforward', stdout=subprocess.PIPE, shell=True)
+                        # time.sleep(5)
+                        p.kill()
+                    status = 1
+
                 cv2.putText(clone, str(fingers), (70, 45), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
                 
                 # show the thresholded image
