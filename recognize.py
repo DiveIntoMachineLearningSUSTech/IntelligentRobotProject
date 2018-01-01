@@ -106,7 +106,9 @@ def count(thresholded, segmented):
 
 def reset():
     global status
-    time.sleep(5)
+    print 'reset before'
+    time.sleep(5.5)
+    print 'reset after'
     status = 0
 
 
@@ -183,14 +185,17 @@ if __name__ == "__main__":
                 if status == 0:
                     if fingers == 2:
                         p = subprocess.Popen('rosrun turtle_move line', stdout=subprocess.PIPE, shell=True)
+                        print('line')
                         # time.sleep(5)
                         # p.kill()
                     elif fingers == 1:
                         p = subprocess.Popen('rosrun turtle_move circle', stdout=subprocess.PIPE, shell=True)
+                        print 'circle'
                         # time.sleep(5)
                         # p.kill()
                     elif fingers == 3:
                         p = subprocess.Popen('rosrun turtle_move move_turtle_goforward', stdout=subprocess.PIPE, shell=True)
+                        print 'goforward'
                         # time.sleep(5)
                         # p.kill()
                     thread.start_new_thread(reset, ())
