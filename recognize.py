@@ -4,7 +4,8 @@ import imutils
 from sklearn.metrics import pairwise
 import time
 import subprocess
-from thread import _thread
+import thread as _thread
+import sys, termios, tty
 
 # global variables
 bg = None
@@ -115,7 +116,7 @@ def getch():   # define non-Windows version
 
 def keypress():
     global status
-    status = 0 if char == 'c' else 1
+    status = 0 if getch() == 'c' else 1
 
 
 #-------------------------------------------------------------------------------
