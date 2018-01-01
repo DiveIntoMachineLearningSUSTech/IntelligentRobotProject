@@ -169,10 +169,17 @@ if __name__ == "__main__":
                 # count the number of fingers
                 fingers = count(thresholded, segmented)
                 if fingers == 2:
-                    p = subprocess.Popen('rostopic pub /mobile_base/commands/sound kobuki_msgs/Sound "value: 6"', stdout=subprocess.PIPE, shell=True)
+                    p = subprocess.Popen('rosrun turtle_move line', stdout=subprocess.PIPE, shell=True)
                     time.sleep(5)
                     p.kill()
-
+                elif fingers == 1:
+                    p = subprocess.Popen('rosrun turtle_move circle', stdout=subprocess.PIPE, shell=True)
+                    time.sleep(5)
+                    p.kill()
+                elif fingers == 3:
+                    p = subprocess.Popen('rosrun turtle_move move_turtle_goforward', stdout=subprocess.PIPE, shell=True)
+                    time.sleep(5)
+                    p.kill()
                 cv2.putText(clone, str(fingers), (70, 45), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
                 
                 # show the thresholded image
