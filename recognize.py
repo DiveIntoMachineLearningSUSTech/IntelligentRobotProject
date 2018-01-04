@@ -204,7 +204,7 @@ if __name__ == "__main__":
                         # p.kill()
                         # thread.start_new_thread(reset, ())
                         thread.start_new_thread(reset, ())
-                    elif fingers == 3:
+                    else:
                         p = subprocess.Popen('rosrun turtle_move move_turtle_goforward', stdout=subprocess.PIPE, shell=True)
                         print 'goforward'
                         # time.sleep(5)
