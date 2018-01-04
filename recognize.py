@@ -111,6 +111,13 @@ def reset():
     print 'reset after'
     status = 0
 
+def reset_forward():
+    global status
+    print 'reset before'
+    time.sleep(20.5)
+    print 'reset after'
+    status = 0
+
 
 #-------------------------------------------------------------------------------
 # Main function
@@ -188,17 +195,20 @@ if __name__ == "__main__":
                         print('line')
                         # time.sleep(5)
                         # p.kill()
+                        thread.start_new_thread(reset, ())
                     elif fingers == 1:
                         p = subprocess.Popen('rosrun turtle_move circle', stdout=subprocess.PIPE, shell=True)
                         print 'circle'
                         # time.sleep(5)
                         # p.kill()
+                        thread.start_new_thread(reset, ())
                     elif fingers == 3:
                         p = subprocess.Popen('rosrun turtle_move move_turtle_goforward', stdout=subprocess.PIPE, shell=True)
                         print 'goforward'
                         # time.sleep(5)
                         # p.kill()
-                    thread.start_new_thread(reset, ())
+                        thread.start_new_thread(reset, ())
+                    thread.start_new_thread(reset_forward, ())
                     status = 1
 
                 cv2.putText(clone, str(fingers), (70, 45), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
